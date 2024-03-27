@@ -1,16 +1,22 @@
 import React from "react";
 import styles from "./Home.module.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Card from "../../components/shared/Card/Card";
 import Button from "../../components/shared/Button/Button";
 
 const Home = () => {
+  const navigate = useNavigate();
   const signInLinkStyle = {
     color: "#0077ff",
     fontWeight: "bold",
     textDecoration: "none",
     marginLeft: "10px",
   }
+
+  const startRegister = () => {
+    navigate("/register");
+  }
+
   return (
     <div className={styles.cardWrapper}>
       <Card title="Welcome to Coderhouse!" icon="hand">
@@ -20,7 +26,7 @@ const Home = () => {
           sure nothing breaks :)
         </p>
         <div className="">
-          <Button  text="Get your username" />
+          <Button onClick={startRegister}  text="Get your username" />
         </div>
         <div className={styles.siginWrapper}>
           <span className={styles.hasInvite}>Have an invite text?</span>
