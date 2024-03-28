@@ -14,7 +14,7 @@ const Home = () => {
   }
 
   const startRegister = () => {
-    navigate("/register");
+    navigate("/authenticate");
   }
 
   return (
@@ -26,11 +26,11 @@ const Home = () => {
           sure nothing breaks :)
         </p>
         <div className="">
-          <Button onClick={startRegister}  text="Get your username" />
+          <Button onClick={startRegister}  text="Let's Go" />
         </div>
         <div className={styles.siginWrapper}>
           <span className={styles.hasInvite}>Have an invite text?</span>
-          <Link to="/login" style={signInLinkStyle}>Sign In</Link>
+          {/* <Link to="/login" style={signInLinkStyle}>Sign In</Link> */}
         </div>
       </Card>
     </div>
