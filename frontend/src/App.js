@@ -2,8 +2,6 @@ import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Home from "./pages/Home/Home";
 import Navigation from "./components/shared/Navigation/Navigation";
-import Register from "./pages/Register/Register";
-import Login from "./pages/Login/Login";
 import Authenticate from "./pages/Authenticate/Authenticate";
 import GuestRoutes from "./components/Routes/GuestRoutes";
 import SemiProtectedRoutes from "./components/Routes/SemiProtectedRoutes";
@@ -16,9 +14,6 @@ function App() {
     <BrowserRouter>
       <Navigation />
       <Routes>
-        {/* <Route path="/register" element={<Register />} />
-        <Route path="/login" element={<Login />} /> */}
-
         {/* --- Guest Routes --- */}
         <Route path="/" element={<GuestRoutes />}>
           <Route path="" element={<Home />} />
