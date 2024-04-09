@@ -1,11 +1,9 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { Navigate, Outlet } from "react-router-dom";
 
 const ProtectedRoutes = () => {
-  const isAuth = false;
-  const user = {
-    activated: false,
-  };
+  const { user, isAuth } = useSelector((state) => state.auth);
 
   if (!isAuth) {
     return <Navigate to="/" replace={true} />;

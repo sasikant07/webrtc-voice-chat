@@ -3,11 +3,23 @@ import Card from "../../../components/shared/Card/Card";
 import TextInput from "../../../components/shared/TextInput/TextInput";
 import Button from "../../../components/shared/Button/Button";
 import styles from "./StepOtp.module.css";
+import { useDispatch, useSelector } from "react-redux";
+import { verifyOtp } from "../../../http";
+import { setAuth } from "../../../store/authSlice";
 
-const StepOtp = ({ onNext }) => {
+const StepOtp = () => {
+  const dispatch = useDispatch();
+  const { phone, hash } = useSelector((state) => state.auth.otp);
   const [otp, setOtp] = useState("");
 
-  const next = () => {};
+  const submit = async () => {
+    try {
+      const { data } = await verifyOtp({ otp: otp, phone: phone, hash: hash });
+      dispatch(setAuth(data));
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <>
@@ -16,7 +28,7 @@ const StepOtp = ({ onNext }) => {
           <TextInput value={otp} onChange={(e) => setOtp(e.target.value)} />
           <div className="">
             <div className={styles.actionButtonWrap}>
-              <Button onClick={next} text="Next" />
+              <Button onClick={submit} text="Next" />
             </div>
             <p className={styles.bottomParagraph}>
               By entering your email, you’re agreeing to our Terms of Service
