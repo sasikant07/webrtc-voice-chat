@@ -24,9 +24,6 @@ const authSlice = createSlice({
       state.otp.hash = hash;
     },
   },
-  extraReducers: (buider) => {
-    // buider.addCase("", (state, action) => {});
-  },
 });
 
 export const { setAuth, setOtp } = authSlice.actions;

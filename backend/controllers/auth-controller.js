@@ -21,10 +21,11 @@ class AuthController {
     const hash = await hashService.hashOtp(data);
 
     try {
-      await otpService.sendBySms(phone, otp);
+      // await otpService.sendBySms(phone, otp);
       res.json({
         hash: `${hash}.${expires}`,
         phone,
+        otp,
       });
     } catch (error) {
       res
@@ -71,13 +72,20 @@ class AuthController {
       activated: false,
     });
 
+    await tokenService.storeRefreshToken(refreshToken, user._id);
+
     res.cookie("refreshtoken", refreshToken, {
       maxAge: 1000 * 60 * 60 * 24 * 30,
       httpOnly: true,
     });
 
+    res.cookie("accessToken", accessToken, {
+      maxAge: 1000 * 60 * 60 * 24 * 30,
+      httpOnly: true,
+    });
+
     const userDto = new UserDto(user);
-    res.json({ accessToken, user: userDto });
+    res.json({ user: userDto, auth: true });
   };
 }
 
