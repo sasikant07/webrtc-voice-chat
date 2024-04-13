@@ -61,20 +61,20 @@ class AuthController {
       user = await userService.findUser({ phone });
 
       if (!user) {
-        await userService.createUser({ phone });
+        user = await userService.createUser({ phone });
       }
     } catch (error) {
       res.status(500).json({ message: error.message });
     }
 
-    const { accessToken, refreshToken } = tokenService.generateTokens({
+    const { accessToken, refreshToken } = await tokenService.generateTokens({
       _id: user._id,
       activated: false,
     });
 
     await tokenService.storeRefreshToken(refreshToken, user._id);
 
-    res.cookie("refreshtoken", refreshToken, {
+    res.cookie("refreshToken", refreshToken, {
       maxAge: 1000 * 60 * 60 * 24 * 30,
       httpOnly: true,
     });

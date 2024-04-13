@@ -9,10 +9,13 @@ import { setOtp } from "../../../../store/authSlice";
 
 const Phone = ({ onNext }) => {
   const dispatch = useDispatch();
-  const {} = useSelector((state) => state.auth);
+  // const {} = useSelector((state) => state.auth);
   const [phoneNumber, setPhoneNumber] = useState("");
 
   const submit = async () => {
+    if (!phoneNumber) {
+      return;
+    }
     const { data } = await sendOtp({ phone: phoneNumber });
     dispatch(setOtp({ phone: data.phone, hash: data.hash }));
     onNext();

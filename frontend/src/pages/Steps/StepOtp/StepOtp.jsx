@@ -13,6 +13,9 @@ const StepOtp = () => {
   const [otp, setOtp] = useState("");
 
   const submit = async () => {
+    if (!otp || !phone || !hash) {
+      return;
+    }
     try {
       const { data } = await verifyOtp({ otp, phone, hash });
       dispatch(setAuth(data));
