@@ -96,7 +96,7 @@ class AuthController {
     try {
       userData = await tokenService.verifyRefreshToken(refreshTokenFromCookie);
     } catch (error) {
-      res.status(401).json({ message: "Inavid UserData Refresh Token" });
+      return res.status(401).json({ message: "Inavid UserData Refresh Token" });
     }
 
     try {
@@ -106,16 +106,16 @@ class AuthController {
       );
 
       if (!token) {
-        res.status(401).json({ message: "Invalid Refresh Token" });
+        return res.status(401).json({ message: "Invalid Refresh Token" });
       }
     } catch (error) {
-      res.status(500).json({ message: error.message });
+      return res.status(500).json({ message: error.message });
     }
 
     const user = await userService.findUser({ _id: userData._id });
 
     if (!user) {
-      res.status(404).json({ message: "User not found" });
+      return res.status(404).json({ message: "User not found" });
     }
 
     const { accessToken, refreshToken } = await tokenService.generateTokens({
@@ -125,7 +125,7 @@ class AuthController {
     try {
       await tokenService.updateRefreshToken(userData._id, refreshToken);
     } catch (error) {
-      res.status(500).json({ message: error.message });
+      return res.status(500).json({ message: error.message });
     }
 
     res.cookie("refreshToken", refreshToken, {
