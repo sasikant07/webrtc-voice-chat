@@ -9,14 +9,13 @@ import ProtectedRoutes from "./components/Routes/ProtectedRoutes";
 import Activate from "./pages/Activate/Activate";
 import Rooms from "./pages/Rooms/Rooms";
 import { useLoadingWithRefresh } from "./hooks/useLoadingWithRefresh";
-import { useState } from "react";
+import Loader from "./components/shared/Loader/Loader";
 
 function App() {
   const { loading } = useLoadingWithRefresh();
-  // const [loading, setLoading] = useState(false);
 
   return loading ? (
-    "Loading..."
+    <Loader message={"Loading, Please wait ..."} />
   ) : (
     <BrowserRouter>
       <Navigation />
