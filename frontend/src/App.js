@@ -8,9 +8,16 @@ import SemiProtectedRoutes from "./components/Routes/SemiProtectedRoutes";
 import ProtectedRoutes from "./components/Routes/ProtectedRoutes";
 import Activate from "./pages/Activate/Activate";
 import Rooms from "./pages/Rooms/Rooms";
+import { useLoadingWithRefresh } from "./hooks/useLoadingWithRefresh";
+import { useState } from "react";
 
 function App() {
-  return (
+  const { loading } = useLoadingWithRefresh();
+  // const [loading, setLoading] = useState(false);
+
+  return loading ? (
+    "Loading..."
+  ) : (
     <BrowserRouter>
       <Navigation />
       <Routes>

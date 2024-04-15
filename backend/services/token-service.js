@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const refreshModel = require("../models/refresh-model");
+const RefreshModel = require("../models/refresh-model");
 
 const accessTokenSecret = process.env.JWT_ACCESS_TOKEN_SECRET;
 const refreshTokenSecret = process.env.JWT_REFRESH_TOKEN_SECRET;
@@ -7,7 +7,7 @@ const refreshTokenSecret = process.env.JWT_REFRESH_TOKEN_SECRET;
 class TokenService {
   generateTokens = async (payload) => {
     const accessToken = jwt.sign(payload, accessTokenSecret, {
-      expiresIn: "1h",
+      expiresIn: "1m",
     });
     const refreshToken = jwt.sign(payload, refreshTokenSecret, {
       expiresIn: "1y",
@@ -17,7 +17,7 @@ class TokenService {
 
   storeRefreshToken = async (token, userId) => {
     try {
-      await refreshModel.create({
+      await RefreshModel.create({
         token,
         userId,
       });
@@ -28,6 +28,21 @@ class TokenService {
 
   verifyAccessToken = async (token) => {
     return jwt.verify(token, accessTokenSecret);
+  };
+
+  verifyRefreshToken = async (refreshToken) => {
+    return jwt.verify(refreshToken, refreshTokenSecret);
+  };
+
+  findRefreshToken = async (userId, refreshToken) => {
+    return await RefreshModel.findOne({ userId: userId, token: refreshToken });
+  };
+
+  updateRefreshToken = async (userId, refreshToken) => {
+    return await RefreshModel.updateOne(
+      { userId: userId },
+      { token: refreshToken }
+    );
   };
 }
 

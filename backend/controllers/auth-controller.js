@@ -85,7 +85,61 @@ class AuthController {
     });
 
     const userDto = new UserDto(user);
-    res.json({ user: userDto, auth: true });
+    res.status(200).json({ user: userDto, auth: true });
+  };
+
+  refresh = async (req, res) => {
+    const { refreshToken: refreshTokenFromCookie } = req.cookies;
+
+    let userData;
+
+    try {
+      userData = await tokenService.verifyRefreshToken(refreshTokenFromCookie);
+    } catch (error) {
+      res.status(401).json({ message: "Inavid UserData Refresh Token" });
+    }
+
+    try {
+      const token = await tokenService.findRefreshToken(
+        userData._id,
+        refreshTokenFromCookie
+      );
+
+      if (!token) {
+        res.status(401).json({ message: "Invalid Refresh Token" });
+      }
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+
+    const user = await userService.findUser({ _id: userData._id });
+
+    if (!user) {
+      res.status(404).json({ message: "User not found" });
+    }
+
+    const { accessToken, refreshToken } = await tokenService.generateTokens({
+      _id: userData._id,
+    });
+
+    try {
+      await tokenService.updateRefreshToken(userData._id, refreshToken);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+
+    res.cookie("refreshToken", refreshToken, {
+      maxAge: 1000 * 60 * 60 * 24 * 30,
+      httpOnly: true,
+    });
+
+    res.cookie("accessToken", accessToken, {
+      maxAge: 1000 * 60 * 60 * 24 * 30,
+      httpOnly: true,
+    });
+
+    const userDto = new UserDto(user);
+    res.status(200).json({ user: userDto, auth: true });
   };
 }
 
