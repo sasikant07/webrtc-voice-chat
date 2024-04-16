@@ -35,6 +35,14 @@ body {
   color: #fff;
 }
 
+button {
+  /* background: none; */
+  border: none;
+  outline: none;
+  cursor: pointer;
+  font-weight: bold;
+}
+
 .container {
   width: 1200px;
   max-width: 90%;
